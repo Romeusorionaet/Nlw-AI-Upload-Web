@@ -22,9 +22,14 @@ export function PromptSelect(props: PromptSelectedProps) {
   const [prompts, setPrompts] = useState<Prompt[] | null>(null)
 
   useEffect(() => {
-    api.get('/prompts').then((response) => {
-      setPrompts(response.data)
-    })
+    api
+      .get('/prompts')
+      .then((response) => {
+        setPrompts(response.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
 
   function handlePromptSelected(promptId: string) {

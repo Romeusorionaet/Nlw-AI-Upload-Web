@@ -1,34 +1,36 @@
-import { Github, Wand2 } from 'lucide-react'
-import { Button } from './components/ui/button'
 import { Textarea } from './components/ui/textarea'
+import { Button } from './components/ui/button'
 import { Label } from './components/ui/label'
+import { Github, Wand2 } from 'lucide-react'
 import {
-  Select,
   SelectContent,
-  SelectItem,
   SelectValue,
+  SelectItem,
+  Select,
 } from './components/ui/select'
-import { SelectTrigger } from '@radix-ui/react-select'
-import { Slider } from './components/ui/slider'
-import { Separator } from './components/ui/separator'
 import { VideoInputForm } from './components/video-input-form'
 import { PromptSelect } from './components/prompt-select'
-import { useState } from 'react'
+import { SelectTrigger } from '@radix-ui/react-select'
+import { Separator } from './components/ui/separator'
+import { Slider } from './components/ui/slider'
 import { useCompletion } from 'ai/react'
+import { useState } from 'react'
+
+const apiURL = import.meta.env.VITE_API_URL
 
 export function App() {
   const [temperature, setTemperature] = useState(0.5)
   const [videoId, setVideoId] = useState<string | null>(null)
 
   const {
-    input,
-    setInput,
     handleInputChange,
     handleSubmit,
     completion,
     isLoading,
+    setInput,
+    input,
   } = useCompletion({
-    api: 'http://localhost:3333/ai/complete',
+    api: `${apiURL}/ai/complete`,
     body: {
       videoId,
       temperature,
@@ -43,43 +45,25 @@ export function App() {
       <div className="px-6 py-3 flex items-center justify-between border-b">
         <h1 className="text-xl font-bold">upload.ai</h1>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 max-md:flex-col">
           <span className="text-sm text-muted-foreground">
             Desenvolvido com 💜
           </span>
 
-          <Separator orientation="vertical" className="h-6" />
+          <Separator orientation="vertical" className="h-6 max-md:hidden" />
 
-          <Button variant="outline">
+          <a
+            className="flex items-center"
+            href="https://github.com/Romeusorionaet"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Github className="w-4 h-4 mr-2" /> Github
-          </Button>
+          </a>
         </div>
       </div>
 
-      <main className="flex flex-1 gap-6 p-6">
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="grid grid-rows-2 gap-4 flex-1">
-            <Textarea
-              className="resize-none p-4 leading-relaxed"
-              placeholder="Inclua o prompt pela IA"
-              onChange={handleInputChange}
-              value={input}
-            />
-            <Textarea
-              className="resize-none p-4 leading-relaxed"
-              placeholder="Resultado gerado pela IA"
-              value={completion}
-              readOnly
-            />
-          </div>
-
-          <p className="text-sm text-muted-foreground">
-            Lembre-se: você pode atualizar a variável
-            <code className="text-violet-400">{'{transcription}'}</code> no seu
-            prompt para adicionar
-          </p>
-        </div>
-
+      <main className="flex flex-1 gap-6 p-6 max-md:flex-col max-md:items-center">
         <aside className="w-80 space-y-6">
           <VideoInputForm onVideoUploaded={setVideoId} />
 
@@ -130,6 +114,28 @@ export function App() {
             </Button>
           </form>
         </aside>
+        <div className="flex flex-1 flex-col gap-4">
+          <div className="grid grid-rows-2 gap-4 flex-1">
+            <Textarea
+              className="resize-none p-4 leading-relaxed max-md:h-60"
+              placeholder="Inclua o prompt pela IA"
+              onChange={handleInputChange}
+              value={input}
+            />
+            <Textarea
+              className="resize-none p-4 leading-relaxed max-md:h-60"
+              placeholder="Resultado gerado pela IA"
+              value={completion}
+              readOnly
+            />
+          </div>
+
+          <p className="text-sm text-muted-foreground text-end">
+            Lembre-se: você pode atualizar a variável
+            <code className="text-violet-400">{'{transcription}'}</code> no seu
+            prompt para adicionar
+          </p>
+        </div>
       </main>
     </div>
   )

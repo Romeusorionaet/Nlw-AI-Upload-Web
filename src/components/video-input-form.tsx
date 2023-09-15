@@ -90,19 +90,23 @@ export function VideoInputForm(props: VideoInputFormProps) {
 
     setStatus('uploading')
 
-    const response = await api.post('/videos', data)
+    try {
+      const response = await api.post('/videos', data)
 
-    const videoId = response.data.video.id
+      const videoId = response.data.video.id
 
-    setStatus('generating')
+      setStatus('generating')
 
-    await api.post(`/videos/${videoId}/transcription`, {
-      prompt,
-    })
+      await api.post(`/videos/${videoId}/transcription`, {
+        prompt,
+      })
 
-    setStatus('success')
+      setStatus('success')
 
-    props.onVideoUploaded(videoId)
+      props.onVideoUploaded(videoId)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const previewURL = useMemo(() => {
