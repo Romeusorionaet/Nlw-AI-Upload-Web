@@ -18,7 +18,7 @@
 
 <div align='center'>
 
-[😀=> Upload AI <=😀](https://ignite-shop-eosin-xi.vercel.app)
+[😀=> Upload AI <=😀](https://nlw-ai-upload-web.vercel.app/)
 
 </div>
 
